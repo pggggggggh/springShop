@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "products")
-public class Product extends BaseTimeEntity {
+public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productId;
@@ -29,8 +29,6 @@ public class Product extends BaseTimeEntity {
     private String laundryInfo;
     private String additionalInfo;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    // 생성한 사람은 createdBy로 조회
 }
 

@@ -10,14 +10,10 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "wishlists")
-public class Wishlist extends BaseTimeEntity {
+public class Wishlist extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer wishlistId;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

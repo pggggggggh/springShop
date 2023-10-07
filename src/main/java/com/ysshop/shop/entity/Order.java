@@ -12,17 +12,13 @@ import java.util.Date;
 @ToString
 @Entity
 @Table(name = "orders")
-public class Order extends BaseTimeEntity {
+public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderId;
     private Integer quantity;
     private Double totalPrice;
     private Date orderDate;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
