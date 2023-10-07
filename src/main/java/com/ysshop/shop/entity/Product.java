@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "products")
-public class Product {
+public class Product extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productId;

@@ -18,7 +18,7 @@ import java.util.*;
 @Getter
 @Setter
 @ToString
-public class User implements UserDetails {
+public class User extends BaseTimeEntity implements UserDetails {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)

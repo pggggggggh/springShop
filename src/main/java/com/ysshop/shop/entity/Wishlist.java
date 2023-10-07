@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "wishlists")
-public class Wishlist {
+public class Wishlist extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer wishlistId;
