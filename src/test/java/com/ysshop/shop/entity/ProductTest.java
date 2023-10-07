@@ -32,7 +32,7 @@ public class ProductTest {
         em.flush();
         em.clear();
 
-        Product findProduct = productRepository.findByProductId(product.getProductId());
+        Product findProduct = productRepository.findById(product.getId()).get();
 
         System.out.println("createdBy = " + findProduct.getCreatedBy());
         System.out.println("createTime = " + findProduct.getCreateTime());
