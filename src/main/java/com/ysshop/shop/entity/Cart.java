@@ -13,7 +13,8 @@ import lombok.ToString;
 public class Cart extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cartId;
+    private Long cartId;
+
     private Integer quantity;
 
     @ManyToOne

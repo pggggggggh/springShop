@@ -22,7 +22,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id; // PK
+    private Long id; // PK
 
     @Column(unique = true)
     private String username; // 로그인할 때 쓰는 아이디

@@ -15,9 +15,12 @@ import java.util.Date;
 public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer orderId;
+    private Long orderId;
+
     private Integer quantity;
+
     private Double totalPrice;
+
     private Date orderDate;
 
     @ManyToOne

@@ -13,7 +13,7 @@ import lombok.ToString;
 public class Wishlist extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer wishlistId;
+    private Long wishlistId;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
