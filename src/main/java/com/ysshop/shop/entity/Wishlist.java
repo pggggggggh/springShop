@@ -1,7 +1,13 @@
 package com.ysshop.shop.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "wishlists")
 public class Wishlist {
@@ -16,31 +22,5 @@ public class Wishlist {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
-    // Getters
-    public Integer getWishlistId() {
-        return wishlistId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    // Setters
-    public void setWishlistId(Integer wishlistId) {
-        this.wishlistId = wishlistId;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
 }
 
