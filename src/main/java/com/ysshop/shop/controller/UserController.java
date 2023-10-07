@@ -20,8 +20,9 @@ public class UserController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.OK)
-    public void newUser(@Valid @RequestBody NewUserDto newUserDto) {
+    public ResponseEntity<?> newUser(@Valid @RequestBody NewUserDto newUserDto) {
         User user = User.createUser(newUserDto, passwordEncoder);
         userService.saveUser(user);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
