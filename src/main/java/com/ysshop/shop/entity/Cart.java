@@ -13,12 +13,17 @@ import lombok.ToString;
 public class Cart extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private Long id;
 
-    private Integer quantity;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user; // 인플루언서 정보
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product product;
+    private Product product; // 상품 정보
+
+    private int quantity; // 상품 수량
+
 }
 
