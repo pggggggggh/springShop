@@ -9,6 +9,7 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -18,6 +19,7 @@ import java.util.*;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class User extends BaseTimeEntity implements UserDetails {
     @Id
     @Column(name = "user_id")
