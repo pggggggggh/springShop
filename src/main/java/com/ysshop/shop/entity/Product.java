@@ -10,39 +10,37 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "products")
+@NoArgsConstructor
 public class Product extends BaseEntity {
     @Id
     @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User seller; // 도매상 정보
 
     private String name;
-
-    private String categoryTag;
-
-    private String typeTag;
-
+    private String type;
+    private String style;
     private String color;
-
     private String size;
-
     private String composition;
-
-    private String countryOfOrigin;
-
-    private Boolean isPerPiece;
-
+    private String countryOfManufacture;
+    private boolean isPerPiece;
+    private String registrationInfo;
     private String thickness;
-
     private String transparency;
-
     private String elasticity;
-
     private String lining;
-
     private String laundryInfo;
+    private String additionalDescription;
+    private boolean isSoldOut; // 품절 여부
+    private int stockQuantity; // 재고 수량
 
-    private String additionalInfo;
+     // 상품 사진은 별도의 엔터티로 관리
+    @OneToMany(mappedBy = "product")
+    private List<ProductImage> productImages;
+
 
     // 생성한 사람은 createdBy로 조회
 }
