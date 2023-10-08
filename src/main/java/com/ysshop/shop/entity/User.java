@@ -29,6 +29,21 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     private String name;
 
+    
+    private String phoneNumber;
+    private String email;
+    private boolean isSeller; // true: 도매상, false: 인플루언서
+
+    // 도매상 정보
+    private String wholesaleName; // 도매상 이름
+    private String wholesaleAddress; // 도매상 주소
+    private int numberOfClients; // 거래처 수
+    private int totalNumberOfProducts; // 전체 상품 수
+    private String wholesalePhoneNumber; // 도매상 전화번호
+    
+    // 인플루언서 정보
+    private String influencerCountry; // 인플루언서 국가
+
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
