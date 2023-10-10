@@ -46,4 +46,19 @@ public class Order extends BaseEntity {
     
     // 주문/결제 동의 관련
     private boolean isAgreeWithTerms; // 주문상품 및 결제 대행 이용약관 동의
-}
+
+ public void addOrderProduct(OrderProduct orderProduct) {
+  orderProducts.add(orderProduct);
+  orderProduct.setOrder(this);
+ }
+
+ public static Order createOrder(User user, List<OrderProduct> orderProductList) {
+  Order order = new Order();
+  order.setUser(user);
+  for(OrderProduct orderProduct : orderProductList) {
+   order.addOrderProduct(orderProduct);
+  }
+  order.setOrderStatus(OrderStatus.ORDER);
+  order.setOrderDate(LocalDateTime.now());
+  return order;
+ }
