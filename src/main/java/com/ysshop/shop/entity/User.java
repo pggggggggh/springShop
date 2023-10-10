@@ -26,14 +26,19 @@ public class User extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; // PK
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String username; // 로그인할 때 쓰는 아이디
 
+    @Column(nullable = false)
     private String name;
 
-    
+    @Column(nullable = false, unique = true)
     private String phoneNumber;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private boolean isSeller; // true: 도매상, false: 인플루언서
 
     // 도매상 정보
