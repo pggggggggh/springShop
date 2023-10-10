@@ -1,11 +1,13 @@
 package com.ysshop.shop.entity;
-
+import com.ysshop.shop.constant.IsSoldOut;
+import com.ysshop.shop.entity.BodyType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.NoArgsConstructor;
-
+import java.util.List;
+import com.ysshop.shop.exception.OutOfStockException;
 @Getter
 @Setter
 @ToString
@@ -20,7 +22,15 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User seller; // 도매상 정보
 
+    @Column(nullable = false)
+    private int price;
+
+    @Enumerated(EnumType.STRING)
+    private BodyType bodyType;
+
+    @Column(nullable = false)
     private String name;
+
     private String type;
     private String style;
     private String color;
@@ -34,15 +44,29 @@ public class Product extends BaseEntity {
     private String elasticity;
     private String lining;
     private String laundryInfo;
+
+    @Lob
     private String additionalDescription;
-    private boolean isSoldOut; // 품절 여부
+
+    @Enumerated(EnumType.STRING)
+    private IsSoldOut isSoldOut; // 품절 여부
+
+    @Column(nullable = false)
     private int stockQuantity; // 재고 수량
 
      // 상품 사진은 별도의 엔터티로 관리
     @OneToMany(mappedBy = "product")
-    private List<ProductImage> productImages;
+    private List<ProductImg> productImages;
 
 
-    // 생성한 사람은 createdBy로 조회
+    public void removeStock(int stockNumber) {
+        int restStock = this.stockQuantity - stockNumber;
+        if(restStock < 0) {
+            throw new OutOfStockException("상품의 재고가 부족합니다." +
+                    "(현재 재고 수량: " + this.stockQuantity + ")");
+        }
+        this.stockQuantity = restStock;
+    }
+
 }
 
