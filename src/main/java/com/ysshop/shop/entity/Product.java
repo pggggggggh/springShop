@@ -8,6 +8,7 @@ import lombok.ToString;
 import lombok.NoArgsConstructor;
 import java.util.List;
 import com.ysshop.shop.exception.OutOfStockException;
+import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
@@ -44,6 +45,8 @@ public class Product extends BaseEntity {
     private String elasticity;
     private String lining;
     private String laundryInfo;
+    private LocalDateTime regTime;
+    private LocalDateTime updateTime;
 
     @Lob
     private String additionalDescription;
