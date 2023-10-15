@@ -16,7 +16,7 @@ public class ProductController {
     @PostMapping("/")
     public void upload(@Valid @RequestPart(value="dto") ProductDto productDto,
                        @NotEmpty @RequestPart(value="repImg") MultipartFile repImg,
-                       @RequestPart(value="otherImg") List<MultipartFile> otherImg) {
-
+                       @RequestPart(value="otherImg", required = false) List<MultipartFile> otherImg) {
+        System.out.println(otherImg.size());
     }
 }

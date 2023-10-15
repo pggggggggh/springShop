@@ -4,7 +4,7 @@ package com.ysshop.shop.service;
 import com.ysshop.shop.dto.OrderDto;
 import com.ysshop.shop.entity.*;
 import com.ysshop.shop.repository.ProductRepository;
-import com.ysshop.shop.repository.UserRepository
+import com.ysshop.shop.repository.UserRepository;
 import com.ysshop.shop.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

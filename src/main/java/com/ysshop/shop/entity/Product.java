@@ -1,6 +1,5 @@
 package com.ysshop.shop.entity;
-import com.ysshop.shop.constant.IsSoldOut;
-import com.ysshop.shop.entity.BodyType;
+import com.ysshop.shop.constant.BodyType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +18,8 @@ public class Product extends BaseEntity {
     @Id
     @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User seller; // 도매상 정보
@@ -51,8 +52,7 @@ public class Product extends BaseEntity {
     @Lob
     private String additionalDescription;
 
-    @Enumerated(EnumType.STRING)
-    private IsSoldOut isSoldOut; // 품절 여부
+    private Boolean isSoldOut; // 품절 여부
 
     @Column(nullable = false)
     private int stockQuantity; // 재고 수량

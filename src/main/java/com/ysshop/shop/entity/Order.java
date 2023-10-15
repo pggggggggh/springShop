@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name = "orders")
 @NoArgsConstructor
 public class Order extends BaseEntity {
-   @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -37,28 +37,29 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus; // 주문 상태: 주문 확인, 배송 중, 배송 완료 등
     private String soldOutProcess; // 품절 상품 처리 방법: 전체 환불, 전체 미송, 상품별 선택 등
-    
+
     // 결제 정보
     private double totalProductAmount; // 상품금액 합계
     private double purchaseFee; // 사입수수료
     private double deliveryFee; // 배송비
     private double totalAmount; // 총 결제금액
-    
+
     // 주문/결제 동의 관련
     private boolean isAgreeWithTerms; // 주문상품 및 결제 대행 이용약관 동의
 
- public void addOrderProduct(OrderProduct orderProduct) {
-  orderProducts.add(orderProduct);
-  orderProduct.setOrder(this);
- }
+    public void addOrderProduct(OrderProduct orderProduct) {
+        orderProducts.add(orderProduct);
+        orderProduct.setOrder(this);
+    }
 
- public static Order createOrder(User user, List<OrderProduct> orderProductList) {
-  Order order = new Order();
-  order.setUser(user);
-  for(OrderProduct orderProduct : orderProductList) {
-   order.addOrderProduct(orderProduct);
-  }
-  order.setOrderStatus(OrderStatus.ORDER);
-  order.setOrderDate(LocalDateTime.now());
-  return order;
- }
+    public static Order createOrder(User user, List<OrderProduct> orderProductList) {
+        Order order = new Order();
+        order.setUser(user);
+        for (OrderProduct orderProduct : orderProductList) {
+            order.addOrderProduct(orderProduct);
+        }
+        order.setOrderStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+}

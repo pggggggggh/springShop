@@ -25,6 +25,6 @@ public class Wishlist extends BaseEntity {
     @JoinColumn(name = "product_id")
     private Product product; // 찜한 상품 정보
     
-    private Date addedDate; // 상품이 찜 목록에 추가된 날짜
+    // BaseTimeEntity에 createdTime 있어서 생성 시각은 필요 X
 }
 
