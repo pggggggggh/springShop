@@ -20,14 +20,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/new")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> newUser(@Valid @RequestBody NewUserDto newUserDto) {
-        User user = User.createUser(newUserDto, passwordEncoder);
-        userService.saveUser(user);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-    @PostMapping("/new")
-    public ResponseEntity<?> newMember(@Valid @RequestBody NewUserDto newUserDto, BindingResult bindingResult) {
+    public ResponseEntity<?> newUser(@Valid @RequestBody NewUserDto newUserDto, BindingResult bindingResult) {
 
         // @RequestBody 어노테이션은 HTTP 요청 본문을 자바 객체로 변환합니다.
 
