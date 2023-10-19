@@ -70,6 +70,12 @@ public class Product extends BaseEntity {
         }
         this.stockQuantity = restStock;
     }
-
+    public void updateItem(ProductFormDto productFormDto) {
+        this.name = productFormDto.getName();
+        this.price = productFormDto.getPrice();
+        this.stockQuantity = productFormDto.getStockQuantity();
+        this.additionalDescription = productFormDto.getAdditionalDescription();
+        this.isSoldOut = productFormDto.getIsSoldOut();
+    }
 }
 
