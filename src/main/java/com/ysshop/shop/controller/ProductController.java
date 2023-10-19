@@ -11,9 +11,9 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/products")
+@RequestMapping("/seller")
 public class ProductController {
-    @PostMapping("/")
+    @PostMapping("/new/products")
     public void upload(@Valid @RequestPart(value="dto") ProductDto productDto,
                        @NotEmpty @RequestPart(value="repImg") MultipartFile repImg,
                        @RequestPart(value="otherImg", required = false) List<MultipartFile> otherImg) {
