@@ -1,5 +1,6 @@
 package com.ysshop.shop.dto;
-
+import lombok.Getter;
+import lombok.Setter;
 import com.ysshop.shop.constant.BodyType;
 import com.ysshop.shop.entity.Product;
 import com.ysshop.shop.entity.User;
@@ -11,7 +12,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Getter
+@Setter
 public class ProductFormDto {
     private Long id;
 
