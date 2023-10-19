@@ -34,7 +34,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.modelmapper:modelmapper:3.0.0'
-	implementation 'com.querydsl:querydsl-jpa:YOUR_QUERYDSL_VERSION'
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
 }
 
 tasks.named('test') {
