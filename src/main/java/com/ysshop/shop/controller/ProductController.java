@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/seller")
+@RequestMapping("/seller") // 판매자가 직접 상품을 업로드
 public class ProductController {
     @PostMapping("/new/products")
     public void upload(@Valid @RequestPart(value="dto") ProductDto productDto,
