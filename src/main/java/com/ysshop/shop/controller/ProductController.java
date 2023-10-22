@@ -1,6 +1,6 @@
 package com.ysshop.shop.controller;
 
-import com.ysshop.shop.dto.ProductDto;
+import com.ysshop.shop.dto.ProductFormDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/seller") // 판매자가 직접 상품을 업로드
 public class ProductController {
     @PostMapping("/new/products")
-    public void upload(@Valid @RequestPart(value="dto") ProductDto productDto,
+    public void upload(@Valid @RequestPart(value="dto") ProductFormDto productFormDto,
                        @NotEmpty @RequestPart(value="repImg") MultipartFile repImg,
                        @RequestPart(value="otherImg", required = false) List<MultipartFile> otherImg) {
         System.out.println(otherImg.size());
