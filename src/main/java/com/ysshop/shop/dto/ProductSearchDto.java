@@ -16,4 +16,6 @@ public class ProductSearchDto {
     
     private String searchQuery = "";                // 조회할 검색어 저장할 변수
 
+    private BodyType searchBodyQuery;
+
 }
