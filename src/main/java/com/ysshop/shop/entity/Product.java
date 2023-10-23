@@ -47,8 +47,7 @@ public class Product extends BaseEntity {
     private String elasticity;
     private String lining;
     private String laundryInfo;
-    private LocalDateTime regTime;
-    private LocalDateTime updateTime;
+    
 
     @Lob
     private String additionalDescription;
