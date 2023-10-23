@@ -62,4 +62,11 @@ public class Order extends BaseEntity {
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for(OrderProduct orderProduct : orderProducts) {
+            totalPrice += orderProduct.getTotalPrice();
+        }
+        return totalPrice;
+    }
 }
