@@ -28,7 +28,7 @@ public class CartProduct extends BaseEntity {
 
     private int count;
 
-    public static CartProduct createCartItem(Cart cart, Product product, int count) {
+    public static CartProduct createCartProduct(Cart cart, Product product, int count) {
         CartProduct cartProduct = new CartProduct();
         cartProduct.setCart(cart);
         cartProduct.setProduct(product);
