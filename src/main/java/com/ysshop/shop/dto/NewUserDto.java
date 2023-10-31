@@ -1,6 +1,8 @@
 package com.ysshop.shop.dto;
 
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -23,4 +25,11 @@ public class NewUserDto {
 
     @NotNull
     private Boolean isSeller;
+
+    @NotEmpty(message = "이메일을 입력해주세요.")
+    @Email(message = "이메일 형식이 아닙니다.")
+    private String email;
+
+    @NotEmpty(message = "휴대폰 번호를 입력해주세요.")
+    private String phoneNumber;
 }

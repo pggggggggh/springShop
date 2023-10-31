@@ -105,6 +105,8 @@ public class User extends BaseTimeEntity implements UserDetails {
         user.setUsername(newUserDto.getUsername());
         user.setPasswordHashed(passwordEncoder.encode(newUserDto.getPassword()));
         user.setRole(newUserDto.getIsSeller() ? Role.SELLER : Role.USER);
+        user.setPhoneNumber(newUserDto.getPhoneNumber());
+        user.setEmail(newUserDto.getEmail());
 
         return user;
     }
