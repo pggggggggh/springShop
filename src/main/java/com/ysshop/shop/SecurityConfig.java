@@ -43,8 +43,8 @@ public class SecurityConfig {
                 .httpBasic(HttpBasicConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests) -> {
                     authorizeRequests.requestMatchers(HttpMethod.POST,"/users/new").permitAll();
+                    authorizeRequests.requestMatchers(HttpMethod.POST, "/products").hasRole("SELLER");
                     authorizeRequests.requestMatchers(HttpMethod.GET,"/test").hasRole("ADMIN");
-                    authorizeRequests.requestMatchers(HttpMethod.POST, "/seller/new/products").hasRole("SELLER");
 
                     authorizeRequests.anyRequest().authenticated();
                 })
