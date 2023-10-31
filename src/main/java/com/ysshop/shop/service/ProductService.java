@@ -17,20 +17,31 @@ import org.springframework.data.domain.Pageable;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductImgService productImgService;
     private final ProductImgRepository productImgRepository;
 
-    public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> productImgFileList) throws Exception {
-
+    public Long saveProduct(ProductFormDto productFormDto, List<MultipartFile> imgList) throws Exception {
         //상품 등록
         Product product = productFormDto.createProduct();
         productRepository.save(product);
         //이미지 등록
+
+        for (int i=0;i<imgList.size();i++) {
+            ProductImg productImg = new ProductImg();
+            productImg.setProduct(product);
+
+            if (i == 0) productImg.setIsRepImg(true);
+            else productImg.setIsRepImg(false);
+
+            productImgService.saveProductImg(productImg, imgList.get(i));
+        }
 
         return product.getId();
     }
     // 상품조회
     @Transactional(readOnly = true)
     public Page<Product> getAdminProductPage(ProductSearchDto productSearchDto, Pageable pageable){
-        return productRepository.getAdminProductPage(productSearchDto, pageable);
+//        return productRepository.getAdminProductPage(productSearchDto, pageable);
+        return null;
     }
 }

@@ -1,4 +1,5 @@
 package com.ysshop.shop.dto;
+import com.ysshop.shop.config.EnumValue;
 import lombok.Getter;
 import lombok.Setter;
 import com.ysshop.shop.constant.BodyType;
@@ -17,14 +18,15 @@ import java.util.List;
 public class ProductFormDto {
     private Long id;
 
-    @NotBlank(message = "도매상 정보는 필수 입력 값입니다.")
-    private User seller; // 도매상 정보
+//    @NotBlank(message = "도매상 정보는 필수 입력 값입니다.")
+//    private User seller; // 도매상 정보
 
     @NotNull(message = "가격은 필수 입력 값입니다.")
     private int price;
 
     @NotBlank(message = "체형은 필수 입력 값입니다.")
-    private BodyType bodyType;
+    @EnumValue(enumClass = BodyType.class)
+    private String bodyType;
 
     @NotBlank(message = "상품명은 필수 입력 값입니다.")
     private String name;

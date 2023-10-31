@@ -1,4 +1,5 @@
 package com.ysshop.shop.controller;
+import com.ysshop.shop.entity.User;
 import com.ysshop.shop.service.ProductService;
 import com.ysshop.shop.dto.ProductFormDto;
 import com.ysshop.shop.dto.ProductSearchDto;
@@ -6,6 +7,7 @@ import com.ysshop.shop.entity.Product;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
@@ -21,11 +23,17 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-    @PostMapping("/seller/new/products")
-    public void upload(@Valid @RequestPart(value="dto") ProductFormDto productFormDto,
-                       @NotEmpty @RequestPart(value="repImg") MultipartFile repImg,
-                       @RequestPart(value="otherImg", required = false) List<MultipartFile> otherImg) {
-        System.out.println(otherImg.size());
+    @PostMapping("/products")
+    public ResponseEntity<?> upload(@Valid @RequestPart(value="dto") ProductFormDto productFormDto,
+                                    @RequestPart(value="images", required = true) List<MultipartFile> imgList) {
+        try {
+            productService.saveProduct(productFormDto, imgList);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     //코드 생략
     //상품관리자 조회
