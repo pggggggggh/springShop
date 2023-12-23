@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name="cart_product")
+@Table(name="cart_products")
 public class CartProduct extends BaseEntity {
 
     @Id

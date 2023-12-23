@@ -41,7 +41,11 @@ public class ProductService {
     // 상품조회
     @Transactional(readOnly = true)
     public Page<Product> getAdminProductPage(ProductSearchDto productSearchDto, Pageable pageable){
-//        return productRepository.getAdminProductPage(productSearchDto, pageable);
-        return null;
+        return productRepository.getAdminProductPage(productSearchDto, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<MainProductDto> getProductPage(ProductSearchDto productSearchDto, Pageable pageable){
+        return productRepository.getProductPage(productSearchDto, pageable);
     }
 }

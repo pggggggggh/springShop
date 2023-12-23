@@ -1,4 +1,5 @@
 package com.ysshop.shop.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ysshop.shop.constant.BodyType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -58,6 +59,7 @@ public class Product extends BaseEntity {
     private int stockQuantity; // 재고 수량
 
      // 상품 사진은 별도의 엔터티로 관리
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<ProductImg> productImages;
 

@@ -1,10 +1,11 @@
 package com.ysshop.shop.repository;
-import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ysshop.shop.constant.BodyType;
+import com.ysshop.shop.dto.MainProductDto;
 import com.ysshop.shop.dto.ProductSearchDto;
+import com.ysshop.shop.dto.QMainProductDto;
 import com.ysshop.shop.entity.Product;
 import com.ysshop.shop.entity.QProduct;
 import com.ysshop.shop.entity.QProductImg;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.thymeleaf.util.StringUtils;
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom{
     private JPAQueryFactory queryFactory;
@@ -76,7 +78,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom{
     @Override
     public Page<Product> getAdminProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
 
-        List<Product> content = queryFactory		// 7.
+        QueryResults<Product> results = queryFactory        // 7.
                 .selectFrom(QProduct.product)
                 .where(regDtsAfter(productSearchDto.getSearchDateType()),
                         searchIsSoldOutEq(productSearchDto.getSearchIsSoldOut()),
@@ -85,16 +87,36 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom{
                 .orderBy(QProduct.product.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        long total = queryFactory.select(Wildcard.count).from(QProduct.product)
-                .where(regDtsAfter(productSearchDto.getSearchDateType()),
-                        searchIsSoldOutEq(productSearchDto.getSearchIsSoldOut()),
-                        searchByLike(productSearchDto.getSearchBy(), productSearchDto.getSearchQuery()))
-                .fetchOne()
-                ;
-
+        List<Product> content = results.getResults();
+        Long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
-        // 8.
+    }
+
+    @Override
+    public Page<MainProductDto> getProductPage(ProductSearchDto productSearchDto, Pageable pageable) {
+        QProduct product = QProduct.product;
+        QProductImg productImg = QProductImg.productImg;
+
+        QueryResults<MainProductDto> results = queryFactory.select(
+                        new QMainProductDto(
+                                product.id,
+                                product.name,
+                                productImg.imgUrl,
+                                product.price)
+                )
+                .from(productImg)
+                .join(productImg.product, product)
+                .where(productImg.isRepImg.eq(true))
+                .where(searchByLike("name", productSearchDto.getSearchQuery()))
+                .orderBy(product.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<MainProductDto> content = results.getResults();
+        Long total = results.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 }

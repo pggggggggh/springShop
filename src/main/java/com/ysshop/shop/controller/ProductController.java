@@ -1,4 +1,5 @@
 package com.ysshop.shop.controller;
+import com.ysshop.shop.dto.MainProductDto;
 import com.ysshop.shop.entity.User;
 import com.ysshop.shop.service.ProductService;
 import com.ysshop.shop.dto.ProductFormDto;
@@ -6,6 +7,7 @@ import com.ysshop.shop.dto.ProductSearchDto;
 import com.ysshop.shop.entity.Product;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,22 +38,25 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    //코드 생략
-    //상품관리자 조회
-    @GetMapping("/api/admin/products")
-    public ResponseEntity<Map<String, Object>> getItems(ProductSearchDto productSearchDto,
-                                                        @RequestParam(value = "page", defaultValue = "0") int page) {
-        Pageable pageable = PageRequest.of(page, 3);
-        Page<Product> products = productService.getAdminProductPage(productSearchDto, pageable);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("products", products.getContent());
-        response.put("currentPage", products.getNumber());
-        response.put("totalProducts", products.getTotalElements());
-        response.put("totalPages", products.getTotalPages());
-        response.put("productSearchDto", productSearchDto);
-        response.put("maxPage", 5);
+    // 그냥 상품 조회
+    @GetMapping({"/products", "/products/{page}"})
+    public ResponseEntity getProducts(@RequestBody ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page) {
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
+        Page<MainProductDto> products = productService.getProductPage(productSearchDto, pageable);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
+
+    //상품관리자 조회
+    @GetMapping({"/admin/products", "/admin/products/{page}"})
+    public ResponseEntity getAdminProducts(@RequestBody ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page) {
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
+        Page<Product> products = productService.getAdminProductPage(productSearchDto, pageable);
+        System.out.println(products.getContent());
+
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+
 }
