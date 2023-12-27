@@ -100,11 +100,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom{
         QProductImg productImg = QProductImg.productImg;
 
         QueryResults<MainProductDto> results = queryFactory.select(
-                        new QMainProductDto(
-                                product.id,
-                                product.name,
-                                productImg.imgUrl,
-                                product.price)
+                        new QMainProductDto(product.id, product.name, productImg.imgUrl, product.price)
                 )
                 .from(productImg)
                 .join(productImg.product, product)

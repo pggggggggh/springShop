@@ -18,5 +18,9 @@ public interface OrderRepository extends JpaRepository<Order, Long>  {
             "where o.user.email = :email"
     )
     Long countOrder(@Param("email") String email);
+
+    Order findByUid(String uid);
+
+//    Order findById(Long id);
 }
 

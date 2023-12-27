@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -29,14 +30,16 @@ public class Order extends BaseEntity {
     private User user; // 주문한 사용자 정보
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderProduct> orderProducts = new ArrayList<>(); // 주문 상품 목록
+    private List<OrderProduct> orderProducts = new ArrayList<>(); // 주문 상품 목록, 상품1*n1, 상품2*n2..
+
+    private String uid; // 결제에 쓸 고유 ID
 
     private String deliveryAddress; // 배송 주소
     private String deliveryMethod; // 배송 방법: 일반택배, 당일특급 등
     private String paymentMethod; // 결제 방법: 토스 페이 등
     private LocalDateTime orderDate; // 주문 날짜
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus; // 주문 상태: 주문 확인, 배송 중, 배송 완료 등
+    private OrderStatus orderStatus; // 주문 상태: 결제 전, 결제 완료, 취소
     private String soldOutProcess; // 품절 상품 처리 방법: 전체 환불, 전체 미송, 상품별 선택 등
 
     // 결제 정보
@@ -59,12 +62,13 @@ public class Order extends BaseEntity {
         for (OrderProduct orderProduct : orderProductList) {
             order.addOrderProduct(orderProduct);
         }
-        order.setOrderStatus(OrderStatus.ORDER);
+        order.setUid(UUID.randomUUID().toString());
+        order.setOrderStatus(OrderStatus.BEFORE_PAYMENT);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
-    public int getTotalPrice() {
-        int totalPrice = 0;
+    public Long getTotalPrice() {
+        Long totalPrice = 0L;
         for(OrderProduct orderProduct : orderProducts) {
             totalPrice += orderProduct.getTotalPrice();
         }

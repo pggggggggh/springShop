@@ -3,6 +3,7 @@ package com.ysshop.shop;
 import com.ysshop.shop.filter.JwtDecodeFilter;
 import com.ysshop.shop.filter.JwtLoginFilter;
 import com.ysshop.shop.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -37,16 +45,26 @@ public class SecurityConfig {
         jwtLoginFilter.setUsernameParameter("username");
         jwtLoginFilter.setPasswordParameter("password");
 
+
         return http
+                .cors(c -> {
+                    CorsConfigurationSource source = request -> {
+                        CorsConfiguration config = new CorsConfiguration();
+                        config.setAllowedOrigins(List.of("http://localhost:3000"));
+                        config.setAllowedMethods(List.of("GET","POST","OPTIONS"));
+                        return config;
+                    };
+                    c.configurationSource(source);
+                })
                 .csrf(CsrfConfigurer::disable)
                 .formLogin(FormLoginConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests) -> {
-                    authorizeRequests.requestMatchers(HttpMethod.POST,"/users/new").permitAll();
-                    authorizeRequests.requestMatchers(HttpMethod.GET,"/products").permitAll();
+                    authorizeRequests.requestMatchers(HttpMethod.POST, "/users/new").permitAll();
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "/products").permitAll();
                     authorizeRequests.requestMatchers(HttpMethod.POST, "/products").hasRole("SELLER");
-                    authorizeRequests.requestMatchers(HttpMethod.GET,"/test").hasRole("ADMIN");
-                    authorizeRequests.requestMatchers(HttpMethod.GET,"/admin/products").hasRole("ADMIN");
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "/test").hasRole("ADMIN");
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "/admin/products").hasRole("ADMIN");
 
                     authorizeRequests.anyRequest().authenticated();
                 })

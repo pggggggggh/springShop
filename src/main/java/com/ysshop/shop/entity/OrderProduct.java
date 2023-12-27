@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class OrderProduct extends BaseEntity{
-
     @Id
     @GeneratedValue
     @Column(name = "order_product_id")
@@ -34,7 +33,7 @@ public class OrderProduct extends BaseEntity{
         orderProduct.setCount(count);
         orderProduct.setOrderPrice(product.getPrice());
 
-        product.removeStock(count);
+//        product.removeStock(count); 이건 추후 pay에서
         return orderProduct;
     }
 

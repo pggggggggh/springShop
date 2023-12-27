@@ -1,6 +1,9 @@
 package com.ysshop.shop.controller;
 
 import com.ysshop.shop.dto.OrderDto;
+import com.ysshop.shop.dto.PaymentInfoDto;
+import com.ysshop.shop.entity.Order;
+import com.ysshop.shop.repository.OrderRepository;
 import com.ysshop.shop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,36 +21,45 @@ import java.util.List;
 import java.util.Map;
 import com.ysshop.shop.dto.OrderHistDto;
 import java.util.HashMap;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 public class OrderController {
-
+    private final OrderRepository orderRepository;
     private final OrderService orderService;
 
     @PostMapping(value = "/order")
     public @ResponseBody ResponseEntity<?> order(@RequestBody @Valid OrderDto orderDto
             , BindingResult bindingResult, Principal principal){
-        if(bindingResult.hasErrors()){
-            StringBuilder sb = new StringBuilder();
-            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-
-            for (FieldError fieldError : fieldErrors) {
-                sb.append(fieldError.getDefaultMessage());
-            }
-
-            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
-        }
+//        if(bindingResult.hasErrors()){
+//            StringBuilder sb = new StringBuilder();
+//            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+//
+//            for (FieldError fieldError : fieldErrors) {
+//                sb.append(fieldError.getDefaultMessage());
+//            }
+//
+//            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
+//        }
 
         String email = principal.getName();
         Long orderId;
+        Order order;
         try {
             orderId = orderService.order(orderDto, email);
-        } catch(Exception e){
+            order = orderRepository.findById(orderId).get();
+        } catch(Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+//        PaymentInfoDto paymentInfoDto = new PaymentInfoDto(order.getUid(), order.getTotalPrice());
+//        System.out.println(order.get().getTotalPrice());
+        Map<String, Object> response = new HashMap<>();
+        response.put("uid", order.getUid());
+        response.put("amount", order.getTotalPrice());
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
     @GetMapping(value = {"/orders", "/orders/{page}"})
     public ResponseEntity<Map<String, Object>> getOrderHistory(@RequestParam(value = "page", defaultValue = "0") int page, Principal principal) {

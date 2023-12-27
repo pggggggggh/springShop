@@ -5,6 +5,7 @@ import com.ysshop.shop.entity.Product;
 import com.ysshop.shop.entity.ProductImg;
 import com.ysshop.shop.repository.ProductImgRepository;
 import com.ysshop.shop.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,5 +48,21 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Page<MainProductDto> getProductPage(ProductSearchDto productSearchDto, Pageable pageable){
         return productRepository.getProductPage(productSearchDto, pageable);
+    }
+
+    public ProductFormDto getProductDetail(Long productId) {
+        List<ProductImg> productImgList = productImgRepository.findByProductIdOrderByIdAsc(productId);
+        List<ProductImgDto> productImgDtoList = new ArrayList<>();
+        for (ProductImg productImg : productImgList) {
+            ProductImgDto productImgDto = ProductImgDto.of(productImg);
+            productImgDtoList.add(productImgDto);
+        }
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(EntityNotFoundException::new);
+        ProductFormDto productFormDto = ProductFormDto.of(product);
+        productFormDto.setProductImgDtoList(productImgDtoList);
+
+        return productFormDto;
     }
 }

@@ -58,11 +58,10 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private int stockQuantity; // 재고 수량
 
-     // 상품 사진은 별도의 엔터티로 관리
+    // 상품 사진은 별도의 엔터티로 관리
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<ProductImg> productImages;
-
 
     public void removeStock(int stockNumber) {
         int restStock = this.stockQuantity - stockNumber;

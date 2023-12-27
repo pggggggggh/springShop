@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +40,14 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // 그냥 상품 조회
+    @GetMapping("/product/{id}")
+    public ResponseEntity productDetail(@PathVariable("id") Long productId) {
+        ProductFormDto productFormDto = productService.getProductDetail(productId);
+
+        return new ResponseEntity<>(productFormDto, HttpStatus.OK);
+    }
+
+    // 상품 목록 조회
     @GetMapping({"/products", "/products/{page}"})
     public ResponseEntity getProducts(@RequestBody ProductSearchDto productSearchDto, @PathVariable("page") Optional<Integer> page) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
