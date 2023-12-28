@@ -38,6 +38,7 @@ public class Order extends BaseEntity {
     private String deliveryMethod; // 배송 방법: 일반택배, 당일특급 등
     private String paymentMethod; // 결제 방법: 토스 페이 등
     private LocalDateTime orderDate; // 주문 날짜
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus; // 주문 상태: 결제 전, 결제 완료, 취소
     private String soldOutProcess; // 품절 상품 처리 방법: 전체 환불, 전체 미송, 상품별 선택 등
@@ -63,7 +64,7 @@ public class Order extends BaseEntity {
             order.addOrderProduct(orderProduct);
         }
         order.setUid(UUID.randomUUID().toString());
-        order.setOrderStatus(OrderStatus.BEFORE_PAYMENT);
+        order.setOrderStatus(OrderStatus.UNPAID);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }

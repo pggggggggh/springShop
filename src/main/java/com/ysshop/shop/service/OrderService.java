@@ -1,9 +1,11 @@
 package com.ysshop.shop.service;
 
 
+import com.ysshop.shop.constant.OrderStatus;
 import com.ysshop.shop.dto.OrderDto;
 import com.ysshop.shop.dto.OrderProductDto;
 import com.ysshop.shop.entity.*;
+import com.ysshop.shop.exception.OutOfStockException;
 import com.ysshop.shop.repository.ProductImgRepository;
 import com.ysshop.shop.repository.ProductRepository;
 import com.ysshop.shop.repository.UserRepository;
@@ -16,6 +18,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.thymeleaf.util.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -44,6 +47,20 @@ public class OrderService {
 
         return order.getId();
     }
+
+    @Transactional // 재고 감소시키다가 오류 나면 롤백해야 함
+    public void processOrder(Order order) {
+        for (OrderProduct orderProduct : order.getOrderProducts()) {
+            orderProduct.getProduct().removeStock(orderProduct.getCount());
+        }
+        order.setOrderStatus(OrderStatus.PAID);
+    }
+
+    @Transactional
+    public void cancelOrder(Order order) { // 위변조, 재고 없음 등의 사유로 환불
+
+    }
+
     @Transactional(readOnly = true)
     public Page<OrderHistDto> getOrderList(String email, Pageable pageable) {
 
